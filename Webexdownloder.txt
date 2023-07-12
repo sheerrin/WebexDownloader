@@ -6,36 +6,42 @@
 <body>
   <script>
     // Define the CSV data as a variable
-    const csvData = `url1,metadata1,...
-url2,metadata2,...
-...`;
+    const csvData = `url1,metadata1
+https://example.com/video1.mp4,password1
+https://example.com/video2.mp4,password2`;
 
-    // Function to parse CSV content and extract URLs
-    function extractUrlsFromCsv(csvContent) {
+    // Function to parse CSV content and extract URLs and passwords
+    function extractUrlsAndPasswordsFromCsv(csvContent) {
       const lines = csvContent.split("\n");
-      const urls = [];
+      const urlsAndPasswords = [];
 
       lines.forEach((line) => {
         const columns = line.split(",");
-        if (columns.length > 0) {
+        if (columns.length > 1) {
           const url = columns[0].trim();
-          urls.push(url);
+          const password = columns[1].trim();
+          urlsAndPasswords.push({ url, password });
         }
       });
 
-      return urls;
+      return urlsAndPasswords;
     }
 
-    // Extract URLs from the CSV data
-    const urls = extractUrlsFromCsv(csvData);
+    // Extract URLs and passwords from the CSV data
+    const urlsAndPasswords = extractUrlsAndPasswordsFromCsv(csvData);
 
     // Download the recordings
-    urls.forEach((url, index) => {
+    urlsAndPasswords.forEach((data, index) => {
+      const url = data.url;
+      const password = data.password;
       const filename = `recording_${index + 1}.mp4`;
+
+      // Apply the password to the URL if needed
+      const urlWithPassword = password ? `${url}?password=${password}` : url;
 
       // Generate the download link
       const downloadLink = document.createElement('a');
-      downloadLink.href = url;
+      downloadLink.href = urlWithPassword;
       downloadLink.download = filename;
 
       // Initiate the download
@@ -44,5 +50,4 @@ url2,metadata2,...
       document.body.removeChild(downloadLink);
     });
   </script>
-</body>
-</html>
+</body⬤
