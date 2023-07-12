@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Download Webex Recordings</title>
+</head>
+<body>
+  <script>
+    // Define the CSV data as a variable
+    const csvData = `url1,metadata1,...
+url2,metadata2,...
+...`;
 
+    // Function to parse CSV content and extract URLs
+    function extractUrlsFromCsv(csvContent) {
+      const lines = csvContent.split("\n");
+      const urls = [];
+
+      lines.forEach((line) => {
+        const columns = line.split(",");
+        if (columns.length > 0) {
+          const url = columns[0].trim();
+          urls.push(url);
+        }
+      });
+
+      return urls;
+    }
+
+    // Extract URLs from the CSV data
+    const urls = extractUrlsFromCsv(csvData);
+
+    // Download the recordings
+    urls.forEach((url, index) => {
+      const filename = `recording_${index + 1}.mp4`;
+
+      // Generate the download link
+      const downloadLink = document.createElement('a');
+      downloadLink.href = url;
+      downloadLink.download = filename;
+
+      // Initiate the download
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    });
+  </script>
+</body>
+</html>
